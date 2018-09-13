@@ -45,6 +45,7 @@ class GoPro:
 			exit()
 		self.ip_addr = ip_address
 		self._camera=""
+		self.destination_dir = ""
 		self._mac_address=mac_address
 		if camera == "detect":
 			self._camera = self.whichCam()
@@ -672,12 +673,13 @@ class GoPro:
 			else:
 				filename = custom_filename
 			try:
-				urllib.request.urlretrieve("http://" + self.ip_addr + ":8080/videos/DCIM/" + folder + "/" + file, filename)
+				urllib.request.urlretrieve("http://" + self.ip_addr + ":8080/videos/DCIM/" + folder + "/" + file, self.destination_dir + filename)
 			except (HTTPError, URLError) as error:
 				print("ERROR: " + str(error))
 		else:
 			print("Not supported while recording or processing media.")
-	def downloadAll(self, option=""):
+	def downloadAll(self, option="", destination_dir=""):
+		self.destination_dir = destination_dir
 		media_stash=[]
 		if option == "":
 			try:
